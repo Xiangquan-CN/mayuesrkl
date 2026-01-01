@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时代背景 - 致马悦同志</title>
+    
+    <!-- 外部库引入 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Oranienbaum&family=Sorts+Mill+Goudy&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS变量定义 */
+        :root {
+            --bg-color: #2C2C2C;
+            --primary-color: #A8886B;
+            --secondary-color: #DCD3C5;
+            --accent-color: #C04D47;
+            --text-dark: #2C2C2C;
+            --text-light: #DCD3C5;
+            --font-serif: 'Noto Serif SC', serif;
+            --font-display: 'Oranienbaum', serif;
+            --font-body-en: 'Sorts Mill Goudy', serif;
+        }
+
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-serif);
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-in-out forwards;
+            position: relative;
+        }
+
+        /* 粒子背景 */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* 导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(44, 44, 44, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(168, 136, 107, 0.2);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* 页面标题 */
+
+
+        .page-header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--secondary-color);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 发展历程 */
+        .history-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+            font-weight: 700;
+        }
+
+        .history-timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .history-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--accent-color), var(--primary-color));
+            transform: translateX(-50%);
+        }
+
+        .history-item {
+            position: relative;
+            margin-bottom: 4rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .history-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .history-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .history-marker {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            border: 4px solid var(--bg-color);
+            z-index: 2;
+        }
+
+        .history-content {
+            flex: 1;
+            background: rgba(168, 136, 107, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(168, 136, 107, 0.3);
+            margin: 0 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .history-content:hover {
+            transform: translateY(-5px);
+            background: rgba(168, 136, 107, 0.15);
+            box-shadow: 0 15px 40px rgba(168, 136, 107, 0.2);
+        }
+
+        .history-year {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .history-title {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .history-description {
+            color: var(--secondary-color);
+            line-height: 1.7;
+        }
+
+        /* 数据可视化 */
+        .data-section {
+            padding: 4rem 2rem;
+            background: rgba(168, 136, 107, 0.05);
+        }
+
+        .data-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .chart-card {
+            background: rgba(44, 44, 44, 0.8);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(168, 136, 107, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .chart-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(168, 136, 107, 0.15);
+        }
+
+        .chart-title {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .chart-container {
+            height: 400px;
+        }
+
+        /* 成就展示 */
+        .achievements-section {
+            padding: 4rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .achievement-card {
+            background: rgba(168, 136, 107, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(168, 136, 107, 0.3);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-5px);
+            background: rgba(168, 136, 107, 0.15);
+            box-shadow: 0 15px 40px rgba(168, 136, 107, 0.2);
+        }
+
+        .achievement-icon {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .achievement-title {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .achievement-description {
+            color: var(--secondary-color);
+            line-height: 1.6;
+        }
+
+        .achievement-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        /* 未来展望 */
+        .future-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(168, 136, 107, 0.1), rgba(192, 77, 71, 0.1));
+        }
+
+        .future-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .future-content {
+            background: rgba(44, 44, 44, 0.8);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(168, 136, 107, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .future-title {
+            color: var(--primary-color);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        .future-text {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .future-goals {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .goal-item {
+            background: rgba(168, 136, 107, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid rgba(168, 136, 107, 0.3);
+        }
+
+        .goal-icon {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .goal-title {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .goal-description {
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+        }
+
+        /* 页脚 */
+        .footer {
+            background: rgba(44, 44, 44, 0.95);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(168, 136, 107, 0.2);
+        }
+
+        .footer p {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .history-timeline::before {
+                left: 20px;
+            }
+
+            .history-item {
+                flex-direction: column !important;
+                align-items: flex-start;
+            }
+
+            .history-marker {
+                left: 20px;
+                transform: translateX(-50%);
+            }
+
+            .history-content {
+                margin-left: 3rem;
+                margin-right: 0;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-container {
+                height: 300px;
+            }
+
+            .achievements-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .future-goals {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 滚动动画 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- 粒子背景 -->
+    <canvas id="particle-canvas"></canvas>
+    
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">致马悦同志</a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">首页</a></li>
+                <li><a href="context.html" class="nav-link">时代背景</a></li>
+                <li><a href="about.html" class="nav-link">关于</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 页面标题 -->
+    <header class="page-header">
+        <h1>我们的时代，我们的中国</h1>
+        <p>了解祖国发展历程，感受时代变迁，理解我们这一代人的历史使命和责任担当</p>
+    </header>
+    
+    <style>
+        .page-header {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(44, 44, 44, 0.95), rgba(26, 26, 26, 0.95));
+        }
+    </style>
+
+    <!-- 发展历程 -->
+    <section class="history-section reveal">
+        <h2 class="section-title">中国发展历程</h2>
+        
+        <div class="history-timeline">
+            <div class="history-item">
+                <div class="history-marker"></div>
+                <div class="history-content">
+                    <div class="history-year">1949</div>
+                    <div class="history-title">新中国成立</div>
+                    <div class="history-description">
+                        中华人民共和国成立，中国人民从此站起来了。这是一个伟大的历史转折点，标志着中国进入了一个新的历史时期。
+                    </div>
+                </div>
+            </div>
+            
+            <div class="history-item">
+                <div class="history-marker"></div>
+                <div class="history-content">
+                    <div class="history-year">1958-1976</div>
+                    <div class="history-title">探索中的挫折</div>
+                    <div class="history-description">
+                        经历了大跃进、人民公社化运动、三年自然灾害和文化大革命等重大挫折，国家发展遭遇严重困难，给党、国家和各族人民带来了深重灾难。
+                    </div>
+                </div>
+            </div>
+            
+            <div class="history-item">
+                <div class="history-marker"></div>
+                <div class="history-content">
+                    <div class="history-year">1978</div>
+                    <div class="history-title">改革开放</div>
+                    <div class="history-description">
+                        改革开放政策实施，中国经济开始腾飞。这一伟大决策改变了中国的发展轨迹，为后来的繁荣奠定了基础。
+                    </div>
+                </div>
+            </div>
+            
+            <div class="history-item">
+                <div class="history-marker"></div>
+                <div class="history-content">
+                    <div class="history-year">2001</div>
+                    <div class="history-title">加入WTO</div>
+                    <div class="history-description">
+                        中国正式加入世界贸易组织，融入全球经济体系。这标志着中国对外开放进入新阶段，经济快速发展。
+                    </div>
+                </div>
+            </div>
+            
+            <div class="history-item">
+                <div class="history-marker"></div>
+                <div class="history-content">
+                    <div class="history-year">2012</div>
+                    <div class="history-title">新时代开启</div>
+                    <div class="history-description">
+                        党的十八大召开，中国特色社会主义进入新时代。中国梦的提出，为全国人民指明了前进方向。
+                    </div>
+                </div>
+            </div>
+            
+            <div class="history-item">
+                <div class="history-marker"></div>
+                <div class="history-content">
+                    <div class="history-year">2021</div>
+                    <div class="history-title">全面小康</div>
+                    <div class="history-description">
+                        全面建成小康社会，历史性解决绝对贫困问题。这是中华民族发展史上的重要里程碑。
+                    </div>
+                </div>
+            </div>
+            
+            <div class="history-item">
+                <div class="history-marker"></div>
+                <div class="history-content">
+                    <div class="history-year">2025</div>
+                    <div class="history-title">新时代新成就</div>
+                    <div class="history-description">
+                        "十四五"规划圆满收官，多项经济社会发展指标超额完成。科技创新、产业升级、民生改善等领域捷报频传，中国经济实力持续增强，市场体系不断完善，在全球经济体系中的地位更加重要。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 数据可视化 -->
+    <section class="data-section reveal">
+        <div class="data-container">
+            <h2 class="section-title">中国发展成就</h2>
+            
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3 class="chart-title">GDP增长趋势</h3>
+                    <div class="chart-container" id="gdp-chart"></div>
+                </div>
+                
+                <div class="chart-card">
+                    <h3 class="chart-title">科技创新分布</h3>
+                    <div class="chart-container" id="innovation-chart"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 成就展示 -->
+    <section class="achievements-section reveal">
+        <h2 class="section-title">辉煌成就</h2>
+        
+        <div class="achievements-grid">
+            <div class="achievement-card">
+                <div class="achievement-number">14亿</div>
+                <div class="achievement-title">人口大国</div>
+                <div class="achievement-description">
+                    中国是世界第一人口大国，拥有丰富的人力资源，这是国家发展的重要基础。
+                </div>
+            </div>
+            
+            <div class="achievement-card">
+                <div class="achievement-number">2nd</div>
+                <div class="achievement-title">经济总量</div>
+                <div class="achievement-description">
+                    中国GDP总量位居世界第二，是世界第二大经济体，经济发展成就举世瞩目。
+                </div>
+            </div>
+            
+            <div class="achievement-card">
+                <div class="achievement-number">1st</div>
+                <div class="achievement-title">制造业</div>
+                <div class="achievement-description">
+                    中国是世界第一制造业大国，拥有完整的工业体系，制造业产值连续多年位居世界第一。
+                </div>
+            </div>
+            
+            <div class="achievement-card">
+                <div class="achievement-number">脱贫</div>
+                <div class="achievement-title">民生改善</div>
+                <div class="achievement-description">
+                    中国历史性解决绝对贫困问题，近1亿农村贫困人口全部脱贫，832个贫困县全部摘帽，12.8万个贫困村全部出列，创造了人类减贫史上的奇迹。这是资本主义国家绝对不会做的事情，只有在中国特色社会主义制度下，才能集中力量办大事，真正实现共同富裕的目标。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 未来展望 -->
+    <section class="future-section reveal">
+        <div class="future-container">
+            <h2 class="section-title">未来展望</h2>
+            
+            <div class="future-content">
+                <h3 class="future-title">中国梦，我们的梦</h3>
+                <p class="future-text">
+                    作为新时代的中国青年，我们生逢其时，也重任在肩。我们要坚定不移地坚持党的领导，
+                    为实现中华民族伟大复兴的中国梦贡献自己的力量。无论身在何处，从事何种工作，
+                    我们都要牢记自己的使命，为祖国的繁荣富强而努力奋斗。
+                </p>
+                <p class="future-text">
+                    正如信件中所说："我们生在一个强大而美好的中国，这是我们的幸运，
+                    国家正在一步步迈向一个并不遥远的美好未来。"让我们一起见证祖国的强大，
+                    一起为实现中国梦而奋斗！
+                </p>
+                
+                <div class="future-goals">
+                    <div class="goal-item">
+                        <div class="goal-icon">🎯</div>
+                        <div class="goal-title">个人梦想</div>
+                        <div class="goal-description">
+                            每个人都应该有自己的梦想，并为之努力奋斗。无论是学业、事业还是生活，都要追求卓越。
+                        </div>
+                    </div>
+                    
+                    <div class="goal-item">
+                        <div class="goal-icon">🤝</div>
+                        <div class="goal-title">友谊长存</div>
+                        <div class="goal-description">
+                            珍惜身边的朋友，维护真挚的友谊。在人生的道路上，有朋友相伴是一种幸福。
+                        </div>
+                    </div>
+                    
+                    <div class="goal-item">
+                        <div class="goal-icon">🇨🇳</div>
+                        <div class="goal-title">为国贡献</div>
+                        <div class="goal-description">
+                            将个人理想与国家发展相结合，为祖国的繁荣富强贡献自己的青春和力量。
+                        </div>
+                    </div>
+                    
+                    <div class="goal-item">
+                        <div class="goal-icon">🌟</div>
+                        <div class="goal-title">美好未来</div>
+                        <div class="goal-description">
+                            相信未来会更加美好，保持乐观向上的心态，勇敢面对生活中的各种挑战。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <p>2025 致马悦同志 - 18岁生日快乐 | © 湘权</p>
+    </footer>
+
+    <script>
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化粒子背景
+            createParticleBackground();
+            // 初始化图表
+            initializeCharts();
+            
+            // 滚动动画
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            revealElements.forEach(el => {
+                revealObserver.observe(el);
+            });
+        });
+
+        // 创建粒子背景
+        function createParticleBackground() {
+            const canvas = document.getElementById('particle-canvas');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const particles = [];
+            const particleCount = 50;
+            
+            // 创建粒子
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    size: Math.random() * 2 + 1,
+                    opacity: Math.random() * 0.5 + 0.1
+                });
+            }
+            
+            // 动画循环
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                particles.forEach(particle => {
+                    // 更新位置
+                    particle.x += particle.vx;
+                    particle.y += particle.vy;
+                    
+                    // 边界检查
+                    if (particle.x < 0 || particle.x > canvas.width) {
+                        particle.vx *= -1;
+                    }
+                    if (particle.y < 0 || particle.y > canvas.height) {
+                        particle.vy *= -1;
+                    }
+                    
+                    // 绘制粒子
+                    ctx.beginPath();
+                    ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(168, 136, 107, ${particle.opacity})`;
+                    ctx.fill();
+                });
+                
+                requestAnimationFrame(animateParticles);
+            }
+            
+            animateParticles();
+            
+            // 窗口大小改变时重新调整
+            window.addEventListener('resize', function() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        }
+
+        // 初始化图表
+        function initializeCharts() {
+            // GDP增长图表
+            const gdpChart = echarts.init(document.getElementById('gdp-chart'));
+            if (gdpChart) {
+                const gdpOption = {
+                    title: {
+                        text: '中国GDP增长趋势',
+                        textStyle: { color: '#DCD3C5' }
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        backgroundColor: '#2C2C2C',
+                        textStyle: { color: '#DCD3C5' }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ['2010', '2015', '2020', '2025'],
+                        axisLine: { lineStyle: { color: '#A8886B' } },
+                        axisLabel: { color: '#DCD3C5' }
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: '万亿美元',
+                        nameTextStyle: { color: '#DCD3C5' },
+                        axisLine: { lineStyle: { color: '#A8886B' } },
+                        axisLabel: { color: '#DCD3C5' }
+                    },
+                    series: [{
+                        data: [6.1, 11.1, 14.7, 19.6],
+                        type: 'line',
+                        smooth: true,
+                        lineStyle: { color: '#C04D47', width: 3 },
+                        itemStyle: { color: '#C04D47' },
+                        areaStyle: {
+                            color: {
+                                type: 'linear',
+                                x: 0, y: 0, x2: 0, y2: 1,
+                                colorStops: [
+                                    { offset: 0, color: 'rgba(192, 77, 71, 0.3)' },
+                                    { offset: 1, color: 'rgba(192, 77, 71, 0.1)' }
+                                ]
+                            }
+                        }
+                    }]
+                };
+                gdpChart.setOption(gdpOption);
+            }
+            
+            // 科技创新图表
+            const innovationChart = echarts.init(document.getElementById('innovation-chart'));
+            if (innovationChart) {
+                const innovationOption = {
+                    title: {
+                        text: '中国科技创新分布',
+                        textStyle: { color: '#DCD3C5' }
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        backgroundColor: '#2C2C2C',
+                        textStyle: { color: '#DCD3C5' }
+                    },
+                    series: [{
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        data: [
+                            { value: 35, name: '人工智能' },
+                            { value: 30, name: '新能源' },
+                            { value: 20, name: '航天科技' },
+                            { value: 15, name: '量子计算' }
+                        ],
+                        itemStyle: {
+                            borderRadius: 5,
+                            borderColor: '#2C2C2C',
+                            borderWidth: 2
+                        },
+                        label: {
+                            color: '#DCD3C5'
+                        }
+                    }],
+                    color: ['#C04D47', '#A8886B', '#DCD3C5', '#8B7355']
+                };
+                innovationChart.setOption(innovationOption);
+            }
+
+            // 响应式处理
+            window.addEventListener('resize', function() {
+                if (gdpChart) gdpChart.resize();
+                if (innovationChart) innovationChart.resize();
+            });
+        }
+    </script>
+</body>
+</html>
